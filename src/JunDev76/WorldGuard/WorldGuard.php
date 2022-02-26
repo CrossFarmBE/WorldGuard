@@ -21,8 +21,10 @@ namespace JunDev76\WorldGuard;
 
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 
@@ -60,6 +62,13 @@ class WorldGuard extends PluginBase implements Listener{
         }
 
         $ev->cancel();
+    }
+
+    public function onDamage(EntityDamageEvent $ev) : void{
+        $player = $ev->getEntity();
+        if(($player instanceof Player) && !str_starts_with($player->getWorld()->getFolderName(), 'Island.')){
+            $ev->cancel();
+        }
     }
 
 }
